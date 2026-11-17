@@ -1,0 +1,7 @@
+{
+    "name": "web-conventions",
+    "description": "Conventions for a React frontend talking to that API: entities, mappers, services and HTTP client",
+    "author": {
+        "name": "antoine-navette"
+    }
+}

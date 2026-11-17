@@ -1,0 +1,24 @@
+{
+    "name": "antoine-navette",
+    "description": "Antoine Navette's conventions for building apps with Claude Code",
+    "owner": {
+        "name": "antoine-navette"
+    },
+    "plugins": [
+        {
+            "name": "api-conventions",
+            "source": "./plugins/api-conventions",
+            "description": "Conventions for a Clean Architecture TypeScript API: domain, use cases, HTTP routes, configuration and logs"
+        },
+        {
+            "name": "web-conventions",
+            "source": "./plugins/web-conventions",
+            "description": "Conventions for a React frontend talking to that API: entities, mappers, services and HTTP client"
+        },
+        {
+            "name": "docker-conventions",
+            "source": "./plugins/docker-conventions",
+            "description": "Conventions for running a project with Docker Compose: images, compose files, ports, healthchecks and nginx"
+        }
+    ]
+}

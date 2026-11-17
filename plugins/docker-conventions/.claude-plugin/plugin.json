@@ -1,0 +1,7 @@
+{
+    "name": "docker-conventions",
+    "description": "Conventions for running a project with Docker Compose: images, compose files, ports, healthchecks and nginx",
+    "author": {
+        "name": "antoine-navette"
+    }
+}

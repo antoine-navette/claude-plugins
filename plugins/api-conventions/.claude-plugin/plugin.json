@@ -1,0 +1,7 @@
+{
+    "name": "api-conventions",
+    "description": "Conventions for a Clean Architecture TypeScript API: domain, use cases, HTTP routes, configuration and logs",
+    "author": {
+        "name": "antoine-navette"
+    }
+}
