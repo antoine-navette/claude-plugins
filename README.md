@@ -21,6 +21,7 @@ From the project's root, register the marketplace once, then enable each plugin 
 claude plugin marketplace add antoine-navette/claude-plugins --scope project
 claude plugin install api-conventions@antoine-navette --scope project
 claude plugin install web-conventions@antoine-navette --scope project
+claude plugin install docker-conventions@antoine-navette --scope project
 ```
 
 Both commands write to `.claude/settings.json`, which is committed: the marketplace entry says where to find the
