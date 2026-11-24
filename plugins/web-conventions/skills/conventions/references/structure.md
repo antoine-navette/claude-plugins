@@ -16,12 +16,16 @@ src/
 ├── providers/    # AuthProvider.tsx: loads the session, provides it
 ├── guards/       # RequireGuest, RequireAuth, RequireAdmin
 ├── pages/        # one per route: LoginPage.tsx, TransactionsPage.tsx, ErrorPage.tsx
-├── components/   # display elements used in several places
+├── modals/       # one per modal, opened from a page: UpsertTransactionModal.tsx
+├── components/   # pieces several screens reuse: Modal (the frame every modal uses), Navbar
 ├── hooks/        # reusable technical logic: useGeolocation, useCountdown
 ├── constants/    # errors.ts: messages for every error code
 ├── App.tsx       # routes and guards
 └── main.tsx      # router, providers, App
 ```
+
+Folders are named after the role of what they hold, since in React almost everything is a component: a page, a modal,
+a guard and a button are all components, and `components/` alone would say nothing about any of them.
 
 Data flows in one short path: a page calls a service, which calls the HTTP client and maps the response into entities.
 Pages never see `fetch`, the HTTP client nor the types generated from the API (see `api-access.md`).
@@ -68,10 +72,41 @@ const TransactionsPage = () => {
   opening one file.
 - **A page may be long.** A long page that reads top to bottom is better than ten files each used once.
 
+## A modal is a screen too
+
+A modal has its own form, its own submission with its loading and error, its own rules: it is a screen opened from a
+page, not a piece of it. So it gets its own file in `modals/`, even when only one page opens it.
+
+```tsx
+// In the page: one state for every modal it can open, since only one is open at a time
+const [modal, setModal] = useState<
+    | { status: 'closed' }
+    | { status: 'upsert'; transaction: Transaction | null }
+    | { status: 'delete'; transaction: Transaction }
+>({ status: 'closed' });
+
+{modal.status === 'upsert' && (
+    <UpsertTransactionModal
+        transaction={modal.transaction}
+        onClose={() => setModal({ status: 'closed' })}
+        onUpsert={handleUpsert}
+    />
+)}
+```
+
+- **The page decides which modal is open**, with one union in its state, and passes the modal what it needs plus
+  callbacks to report the result.
+- **The modal holds its own state** (its form, its submission), in a `useState` with a `status` like a page.
+- **It is rendered only while open**, so it mounts on each opening and its form starts from the values it receives: no
+  state to reset by hand, no values left over from the previous opening.
+- **Its frame is a component**: the backdrop, the box, the title and the close button are shared by every modal, in
+  `components/Modal.tsx`.
+
 ## Components and hooks
 
 - **A component is extracted only when it is used in several places.** Splitting a page into components used once
-  (`AlertsPanel`, `ShopMap`) moves its logic away without making it reusable.
+  (`AlertsPanel`, `ShopMap`) moves its logic away without making it reusable. This applies to pieces of a screen, not
+  to screens: a page or a modal always has its own file.
 - **Hooks are for reusable technical logic** (`useGeolocation`, `useCountdown`), never for a screen's state: a
   `useShopAlerts` hook moves the state out of the page, which then no longer reads on its own.
 - **Some repetition is accepted** (WET, _Write Everything Twice_): two pages displaying something the same way each
@@ -88,7 +123,8 @@ upfront.
 
 ## Naming
 
-- Pages end with `Page` (`LoginPage`), one per route. Components, providers, guards, entities and mappers are
+- Pages end with `Page` (`LoginPage`), one per route, and modals with `Modal`, named after what they do
+  (`UpsertTransactionModal`, `DeleteTransactionModal`). Components, providers, guards, entities and mappers are
   `PascalCase` files named after what they export. Services are named after the resource (`auth.ts`, `transaction.ts`),
   their functions after the API route (`login`, `getUserTransactions`).
 - A context file exports both the context and its hook (`AuthContext.ts` exports `AuthContext` and `useAuth()`), which

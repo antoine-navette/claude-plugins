@@ -27,7 +27,8 @@ which applies, point it out and ask before changing anything.
 ## Key rules
 
 - The code favours reading over anticipating: a page holds its own state and reads top to bottom, a component is
-  extracted only when reused, hooks are for reusable technical logic, and some repetition is accepted.
+  extracted only when reused, hooks are for reusable technical logic, and some repetition is accepted. Pages and
+  modals are screens: each has its own file, in `pages/` or `modals/`.
 - Data flows page → service → HTTP client → mapper. Pages never see `fetch`, the client nor the generated types.
 - Services are plain functions, one per API route and named like it, returning `[value, null] | [null, 'CODE']` (or
   `'CODE' | null`), with `NETWORK_ERROR` when the request doesn't complete.
@@ -44,6 +45,6 @@ Read the file matching the task:
 
 | File                               | Read it to                                                                           |
 | ---------------------------------- | ------------------------------------------------------------------------------------ |
-| `references/structure.md`          | place a file, write a page and its state, extract a component or a hook, name things |
+| `references/structure.md`          | place a file, write a page or a modal, extract a component or a hook, name things    |
 | `references/api-access.md`         | call the API: generated types, HTTP client, services, entities, mappers              |
 | `references/session-and-errors.md` | handle the session, guards, error codes and messages, input validation               |
