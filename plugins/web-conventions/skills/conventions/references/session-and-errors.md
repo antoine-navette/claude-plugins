@@ -20,9 +20,9 @@ Routes are grouped under guards, which read `useAuth()`:
 
 | Guard          | Lets through          | Otherwise                                               |
 | -------------- | --------------------- | ------------------------------------------------------- |
-| `RequireGuest` | A visitor, signed out | Redirect to `/`                                         |
-| `RequireAuth`  | A signed-in user      | Redirect to `/login`                                    |
-| `RequireAdmin` | An administrator      | Error page `FORBIDDEN` (always nested in `RequireAuth`) |
+| `GuestGuard`   | A visitor, signed out | Redirect to `/`                                         |
+| `AuthGuard`    | A signed-in user      | Redirect to `/login`                                    |
+| `AdminGuard`   | An administrator      | Error page `FORBIDDEN` (always nested in `AuthGuard`)   |
 
 They are display conveniences only: the API protects the data, on every request.
 
@@ -30,7 +30,7 @@ They are display conveniences only: the API protects the data, on every request.
 
 A session can disappear while the application is open: signed out in another tab, deleted on the server. The HTTP
 client checks every response: when its code is `UNAUTHORIZED`, it calls the callback `AuthProvider` registered with
-`onUnauthorized()`. The user becomes `null`, and `RequireAuth` redirects to the login page, wherever the user was.
+`onUnauthorized()`. The user becomes `null`, and `AuthGuard` redirects to the login page, wherever the user was.
 
 ## Errors are codes
 

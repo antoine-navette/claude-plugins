@@ -14,7 +14,7 @@ src/
 ├── mappers/      # API schema -> entity: UserMapper.ts
 ├── contexts/     # AuthContext.ts: the context and its useAuth() hook
 ├── providers/    # AuthProvider.tsx: loads the session, provides it
-├── guards/       # RequireGuest, RequireAuth, RequireAdmin
+├── guards/       # GuestGuard, AuthGuard, AdminGuard
 ├── pages/        # one per route: LoginPage.tsx, TransactionsPage.tsx, ErrorPage.tsx
 ├── modals/       # one per modal, opened from a page: UpsertTransactionModal.tsx
 ├── components/   # pieces several screens reuse: Modal (the frame every modal uses), Navbar
@@ -123,9 +123,13 @@ upfront.
 
 ## Naming
 
-- Pages end with `Page` (`LoginPage`), one per route, and modals with `Modal`, named after what they do
-  (`UpsertTransactionModal`, `DeleteTransactionModal`). Components, providers, guards, entities and mappers are
-  `PascalCase` files named after what they export. Services are named after the resource (`auth.ts`, `transaction.ts`),
-  their functions after the API route (`login`, `getUserTransactions`).
+- **A file in a role folder ends with its role**: `LoginPage`, `UpsertTransactionModal`, `AuthGuard`, `AuthProvider`,
+  `AuthContext`, `UserMapper`. One rule to remember, and a name that never clashes with what it relates to (`Login`
+  next to the `login()` service, `User` the entity, `Auth` alone). It is the file's name too, in `PascalCase`.
+- Pages are one per route, and modals are named after what they do (`UpsertTransactionModal`,
+  `DeleteTransactionModal`).
+- What isn't a role is named after what it is or does: components (`Navbar`, `DateNavigator`), hooks
+  (`useCountdown`), entities (`User`). Services are named after the resource (`auth.ts`, `transaction.ts`), their
+  functions after the API route (`login`, `getUserTransactions`).
 - A context file exports both the context and its hook (`AuthContext.ts` exports `AuthContext` and `useAuth()`), which
   throws when used outside its provider.
